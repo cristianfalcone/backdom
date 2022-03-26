@@ -2,8 +2,8 @@
   "name": "backdom",
   "version": "0.0.1",
   "description": "backdom is a minimal DOM implementation for SSR purposes",
-  "main": "index.js",
   "type": "module",
+  "main": "index.js",
   "scripts": {
     "test": "uvu"
   },

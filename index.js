@@ -70,7 +70,7 @@ class Node {
 
   get nextSibling() {
     const next = getEnd(this)[NEXT]
-    return next?.[TYPE] == END ? null : next
+    return next?.[TYPE] === END ? null : next
   }
 
   get previousSibling() {
@@ -133,7 +133,7 @@ class Node {
   }
 
   removeChild(child) {
-    if (child?.[PARENT] != this) throw new Error('The node to be removed is not a child of this node.')
+    if (child?.[PARENT] !== this) throw new Error('The node to be removed is not a child of this node.')
     child.remove()
     return child
   }
@@ -181,6 +181,10 @@ class Element extends Node {
     return [...this[CHILDREN](node => node[TYPE] === Node.ELEMENT_NODE)]
   }
 
+  getAttributeNames() {
+    return [...this[ATTRS]()].map(attr => attr.name)
+  }
+
   setAttribute(name, value) {
     const attr = getAttr(this, name)
     if (attr) attr[VALUE] = value
@@ -188,7 +192,7 @@ class Element extends Node {
   }
 
   getAttribute(name) {
-    getAttr(this, name)?.[VALUE]
+    return getAttr(this, name)?.[VALUE]
   }
 
   removeAttribute(name) {
