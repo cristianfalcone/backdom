@@ -1,0 +1,23 @@
+{
+  "name": "backdom",
+  "version": "0.0.1",
+  "description": "backdom is a minimal DOM implementation for SSR purposes",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "uvu"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cristianfalcone/backdom.git"
+  },
+  "author": "Cristian Falcone",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cristianfalcone/backdom/issues"
+  },
+  "homepage": "https://github.com/cristianfalcone/backdom#readme",
+  "devDependencies": {
+    "uvu": "^0.5.3"
+  }
+}
