@@ -1,4 +1,6 @@
+import createDocument from './index.js'
+
 if (typeof global != 'undefined' && global.document == null) {
-  global.window = await import('./index.js').then(mod => mod.default().defaultView)
+  global.window = createDocument().defaultView
   Object.assign(global, global.window)
 }

@@ -3,8 +3,19 @@
   "version": "0.0.2",
   "description": "backdom is a minimal DOM implementation for SSR purposes",
   "type": "module",
-  "main": "index.js",
+  "main": "cjs/index.js",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "require": "./cjs/index.js"
+    },
+    "./register": {
+      "import": "./register.js",
+      "require": "./cjs/register.js"
+    }
+  },
   "scripts": {
+    "build": "esbuild --outdir=cjs --format=cjs index.js register.js",
     "test": "uvu"
   },
   "repository": {
@@ -18,6 +29,7 @@
   },
   "homepage": "https://github.com/cristianfalcone/backdom#readme",
   "devDependencies": {
+    "esbuild": "^0.14.30",
     "uvu": "^0.5.3"
   }
 }
