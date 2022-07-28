@@ -1,6 +1,6 @@
 import createDocument from './index.js'
 
-if (typeof global != 'undefined' && global.document == null) {
-  global.window = createDocument().defaultView
-  Object.assign(global, global.window)
+if (globalThis.window == null) {
+  globalThis.window = createDocument().defaultView
+  Object.assign(globalThis, globalThis.window)
 }

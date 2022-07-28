@@ -47,11 +47,11 @@ class Node {
     this[NEXT] = null
   }
 
-  *[CHILDREN](filter = () => true) {
+  *[CHILDREN]({ filter = () => true, map = v => v } = {}) {
     let { firstChild } = this
 
     while (firstChild) {
-      if (filter(firstChild)) yield firstChild
+      if (filter(firstChild)) yield map(firstChild)
       firstChild = firstChild.nextSibling
     }
   }
@@ -142,6 +142,16 @@ class Node {
     setAdjacent(this[PREV], getEnd(this)[NEXT])
     this[PARENT] = this[PREV] = getEnd(this)[NEXT] = null
   }
+
+  replaceChildren(...nodes) {
+    let { firstChild: next } = this, after
+    while (next !== null) {
+      after = next.nextSibling
+      next.remove()
+      next = after
+    }
+    for (const node of nodes) this.appendChild(node)
+  }
 }
 
 const isVoid = tag => /^(?:area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)$/i.test(tag)
@@ -157,10 +167,10 @@ class Element extends Node {
     }
   }
 
-  *[ATTRS]() {
+  *[ATTRS]({ filter = () => true, map = v => v } = {}) {
     let next = this[NEXT]
     while (next[TYPE] === Node.ATTRIBUTE_NODE) {
-      yield next
+      if (filter(next)) yield map(next)
       next = next[NEXT]
     }
   }
@@ -178,11 +188,15 @@ class Element extends Node {
   }
 
   get children() {
-    return [...this[CHILDREN](node => node[TYPE] === Node.ELEMENT_NODE)]
+    return [...this[CHILDREN]({ filter: node => node[TYPE] === Node.ELEMENT_NODE })]
+  }
+
+  hasAttributes() {
+    return this[NEXT][TYPE] === Node.ATTRIBUTE_NODE
   }
 
   getAttributeNames() {
-    return [...this[ATTRS]()].map(attr => attr.name)
+    return [...this[ATTRS]({ map: attr => attr.name })]
   }
 
   setAttribute(name, value) {
@@ -202,7 +216,7 @@ class Element extends Node {
 
   toString() {
     const tag = this.nodeName.toLowerCase()
-    return `<${tag}${this.attributes.join('')}>${isVoid(tag) ? '' : `${this.innerHTML}</${tag}>`}`
+    return `<${tag}${this.hasAttributes() ? ' ' : ''}${this.attributes.join(' ')}>${isVoid(tag) ? '' : `${this.innerHTML}</${tag}>`}`
   }
 }
 
@@ -224,7 +238,7 @@ class Attr extends Node {
 
   toString() {
     const { name, value } = this
-    return name.startsWith('on') ? '' : isEmptiable(name) && !value ? ` ${name}` : ` ${name}="${String(value).replace(/"/g, '&quot;')}"`
+    return name.startsWith('on') ? '' : isEmptiable(name) && !value ? name : `${name}="${String(value).replace(/"/g, '&quot;')}"`
   }
 }
 
@@ -268,7 +282,7 @@ class Document extends Element {
   }
 
   toString() {
-    return `${this.childNodes}`
+    return `<!DOCTYPE html>${this.childNodes}`
   }
 }
 
