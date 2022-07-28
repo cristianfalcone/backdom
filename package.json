@@ -17,7 +17,8 @@
   },
   "scripts": {
     "build": "esbuild --format=cjs --out-extension:.js=.cjs --outdir=. index.js register.js",
-    "test": "uvu"
+    "test": "uvu",
+    "release": "npm run build && npm t && git commit -am \"$npm_package_version\" && git tag $npm_package_version && git push && git push --tags && npm publish"
   },
   "repository": "cristianfalcone/backdom",
   "author": "Cristian Falcone",
