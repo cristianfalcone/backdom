@@ -1,6 +1,3 @@
 import createDocument from './index.js'
 
-if (globalThis.window == null) {
-  globalThis.window = createDocument().defaultView
-  Object.assign(globalThis, globalThis.window)
-}
+if (globalThis.window == null) Object.assign(globalThis, globalThis.window = createDocument().defaultView)

@@ -6,7 +6,7 @@ export default () => {
   html.appendChild(document.head = document.createElement('head'))
   html.appendChild(document.body = document.createElement('body'))
 
-  Object.assign(document, document.defaultView = { document, Node, Element, Attr, Text, Document })
+  Object.assign(document, document.defaultView = { document, Node, Element, Attr, Text, Document, MutationObserver })
 
   return document
 }
@@ -16,9 +16,9 @@ const
 
   TYPE = s(), NAME = s(), VALUE = s(), ATTRS = s(), PARENT = s(), CHILDREN = s(), START = s(), PREV = s(), NEXT = s(), END = s(),
 
-  isVoid = tag => /^(?:area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)$/i.test(tag),
-  
-  isEmptiable = name => /^(?:allowfullscreen|allowpaymentrequest|async|autofocus|autoplay|checked|class|contenteditable|controls|default|defer|disabled|draggable|formnovalidate|hidden|id|ismap|itemscope|loop|multiple|muted|nomodule|novalidate|open|playsinline|readonly|required|reversed|selected|style|truespee)$/i.test(name),
+  isVoid = tag => /^area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr$/i.test(tag),
+
+  isEmptiable = name => /^allowfullscreen|allowpaymentrequest|async|autofocus|autoplay|checked|class|contenteditable|controls|default|defer|disabled|draggable|formnovalidate|hidden|id|ismap|itemscope|loop|multiple|muted|nomodule|novalidate|open|playsinline|readonly|required|reversed|selected|style|truespee$/i.test(name),
 
   replacements = { '\xA0': '&nbsp;', '&': '&amp;', '<': '&lt;', '>': '&gt;' },
 
@@ -124,7 +124,7 @@ const
 
     insertBefore(child, ref) {
       if (child === ref) return child
-      if (child === this) throw new Error('The new child element contains the parent') // a node contains iteself
+      if (child === this) throw new Error('The new child element contains the parent') // Note: A node is contained inside itself.
 
       ref ??= this[END]
 
@@ -281,4 +281,8 @@ const
     toString() {
       return `<!DOCTYPE html>${this.childNodes}`
     }
-  }
+  },
+
+	MutationObserver = class {
+		observe() { }
+	}
