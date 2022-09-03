@@ -1,6 +1,6 @@
 {
   "name": "backdom",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "backdom is a minimal DOM implementation for SSR purposes",
   "type": "module",
   "module": "index.js",
