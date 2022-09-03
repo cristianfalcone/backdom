@@ -26,7 +26,7 @@
   "bugs": "https://github.com/cristianfalcone/backdom/issues",
   "homepage": "https://github.com/cristianfalcone/backdom#readme",
   "devDependencies": {
-    "esbuild": "^0.14.51",
+    "esbuild": "^0.15.6",
     "uvu": "^0.5.6"
   }
 }
