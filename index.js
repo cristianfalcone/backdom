@@ -220,6 +220,13 @@ const
       attr && setAdjacent(attr[PREV], attr[NEXT])
     }
 
+		cloneNode(deep = false) {
+			const clone = new Element(this.nodeType, this.nodeName)
+			for (const attr of this.attributes) clone.setAttribute(attr.name, attr.value)
+			if (deep) for (const child of this.childNodes) clone.appendChild(child.cloneNode(deep))
+			return clone
+		}
+
     toString() {
       const tag = this.nodeName.toLowerCase()
       return `<${tag}${this.hasAttributes() ? ' ' : ''}${this.attributes.join(' ')}>${isVoid(tag) ? '' : `${this.innerHTML}</${tag}>`}`
@@ -240,6 +247,10 @@ const
       return this[VALUE]
     }
 
+		cloneNode() {
+			return new Attr(this.name, this.value)
+		}
+
     toString() {
       const { name, value } = this
       return isEmptiable(name) && !value ? name : `${name}="${String(value).replace(/"/g, '&quot;')}"`
@@ -259,6 +270,10 @@ const
     get data() {
       return this[VALUE]
     }
+
+		cloneNode() {
+			return new Text(this.data)
+		}
 
     toString() {
       return String(this.data).replace(/[<>&\xA0]/g, c => replacements[c])
